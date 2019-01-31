@@ -9,3 +9,5 @@ xkcdPage = urlopen(xkcdUrl)
 soup = BeautifulSoup(xkcdPage)
 comicElement = soup.find("div", {"id": "comic" })
 print(comicElement)
+
+images = soup.findAll('img')
