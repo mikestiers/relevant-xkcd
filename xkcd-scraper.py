@@ -6,8 +6,11 @@ xkcdUrl = 'http://xkcd.com'
 xkcdPage = urlopen(xkcdUrl)
 
 
-soup = BeautifulSoup(xkcdPage)
+soup = BeautifulSoup(xkcdPage, 'html.parser')
 comicElement = soup.find("div", {"id": "comic" })
 print(comicElement)
+comicImage = 'http:' + comicElement.find('img').attrs['src']
 
-images = soup.findAll('img')
+
+#images = soup.findAll('img')
+print()
