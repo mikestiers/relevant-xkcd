@@ -1,4 +1,4 @@
-import requests, os
+import requests, os, time
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 
@@ -9,7 +9,7 @@ previousComic = ((soup.find("a", {"rel":"prev"})).attrs['href']).strip('/')
 currentCommic = int(previousComic) + 1
 
 count = currentCommic
-while (count > 2100):
+while (count > 0):
     xkcdUrl = 'http://xkcd.com/'+str(count)
     xkcdPage = urlopen(xkcdUrl)
     count -= 1
@@ -17,5 +17,6 @@ while (count > 2100):
     comicElement = soup.find("div", {"id": "comic" })
     comicImage = 'http:' + comicElement.find('img').attrs['src']
     print(comicImage)
-
+    if (count % 5 == 0):
+        time.sleep(10)
 print()
