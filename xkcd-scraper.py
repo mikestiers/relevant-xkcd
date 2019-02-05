@@ -1,6 +1,12 @@
-import requests, os, time
+import requests, os, time, sqlite3
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
+
+conn = sqlite3.connect('comics.db')
+c = conn.cursor()
+#c.execute('''CREATE TABLE comics (number text, url text)''')
+
+
 
 xkcdUrl = 'http://xkcd.com/'
 xkcdPage = urlopen(xkcdUrl)
@@ -17,6 +23,11 @@ while (count > 0):
     comicElement = soup.find("div", {"id": "comic" })
     comicImage = 'http:' + comicElement.find('img').attrs['src']
     print(comicImage)
+    c.execute("INSERT INTO comics VALUES (?, ?);", (count, comicImage))
+    conn.commit()
     if (count % 5 == 0):
         time.sleep(10)
+
+conn.close()
+
 print()
