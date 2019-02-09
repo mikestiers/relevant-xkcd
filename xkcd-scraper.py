@@ -1,6 +1,8 @@
 import requests, os, time, sqlite3
+from azure.storage.blob import BlockBlobService, PublicAccess
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
+from urllib.request import urlretrieve
 
 conn = sqlite3.connect('comics.db')
 c = conn.cursor()
@@ -16,7 +18,7 @@ soup = BeautifulSoup(xkcdPage, 'html.parser')
 previousComic = ((soup.find("a", {"rel":"prev"})).attrs['href']).strip('/')
 currentCommic = int(previousComic) + 1
 
-if (currentCommic >= lastLoggedComic):
+if (currentCommic >= (int(lastLoggedComic[0][0]))):
     count = currentCommic
     while (count > lastLoggedComic):
         xkcdUrl = 'http://xkcd.com/'+str(count)
@@ -26,6 +28,7 @@ if (currentCommic >= lastLoggedComic):
         comicElement = soup.find("div", {"id": "comic" })
         comicImage = 'http:' + comicElement.find('img').attrs['src']
         print(comicImage)
+        urlretrieve(currentCommic, currentCommic)
         c.execute("INSERT OR IGNORE INTO comics VALUES (?, ?);", (count, comicImage))
         conn.commit()
         #if (count % 5 == 0):
