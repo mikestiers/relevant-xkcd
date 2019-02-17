@@ -3,7 +3,8 @@ from pprint import pprint
 subscription_key = ""
 assert subscription_key
 text_analytics_base_url = "https://canadacentral.api.cognitive.microsoft.com/text/analytics/v2.0/"
-language_api_url = text_analytics_base_url + "sentiment"
+search_query_base_url = 'https://ocrtest.search.windows.net/indexes/azureblob-index/docs?api-version=2017-11-11&search='
+language_api_url = text_analytics_base_url + "keyphrases"
 print(language_api_url)
 
 
@@ -17,6 +18,8 @@ def checkSentiment(title, selfText):
     response  = requests.post(language_api_url, headers=headers, json=documents)
     languages = response.json()
     pprint(languages)
+    searchHeaders = {"content-type": "application/json", "api-key": "26B2F4C6F9DD073A31EEBD94E870F1AF"}
+    searchResponse = requests.get(search_query_base_url + "magnetic", headers=searchHeaders)
     return
 
 
