@@ -1,4 +1,4 @@
-import requests
+import requests, json
 from pprint import pprint
 subscription_key = ""
 assert subscription_key
@@ -20,6 +20,9 @@ def checkSentiment(title, selfText):
     pprint(languages)
     searchHeaders = {"content-type": "application/json", "api-key": "26B2F4C6F9DD073A31EEBD94E870F1AF"}
     searchResponse = requests.get(search_query_base_url + "magnetic", headers=searchHeaders)
+    searchResponseJson = json.loads(searchResponse.text)
+    for keyphrase in searchResponseJson['value'][0]['keyphrases']:
+        print(keyphrase)
     return
 
 
