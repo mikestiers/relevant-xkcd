@@ -25,6 +25,9 @@ def checkSentiment(title, selfText):
         print(keyphrase)
     return
 
+    # dictionary comprehension - look into it 
+    # https://superuser.com/questions/1005263/python-script-to-compare-the-keys-of-2-dictionaries-and-if-equal-print-value-of
+    matchingKeys = {key:documents[key] for key in searchResponseJson if key in documents}
 
 # reddit bot praw magic
 import praw
