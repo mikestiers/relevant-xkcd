@@ -16,8 +16,9 @@ def checkSentiment(title, selfText):
     { 'id': '2', 'text': selfText }
     ]}
     headers   = {"Ocp-Apim-Subscription-Key": subscription_key}
-    response  = requests.post(language_api_url, headers=headers, json=documents)
-    languages = response.json()
+    redditResponse  = requests.post(language_api_url, headers=headers, json=documents)
+    redditResponseJson = json.loads(redditResponse.content)
+    languages = redditResponse.json()
     pprint(languages)
     searchHeaders = {"content-type": "application/json", "api-key": "26B2F4C6F9DD073A31EEBD94E870F1AF"}
     searchResponse = requests.get(search_query_base_url + "magnetic", headers=searchHeaders)
