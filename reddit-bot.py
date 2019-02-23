@@ -1,12 +1,11 @@
+import config
 import requests, json
 from pprint import pprint
-subscription_key = ""
-assert subscription_key
-text_analytics_base_url = "https://canadacentral.api.cognitive.microsoft.com/text/analytics/v2.0/"
-search_query_base_url = 'https://ocrtest.search.windows.net/indexes/azureblob-index/docs?api-version=2017-11-11&search='
+subscription_key = config.AZURE_CONFIG['subscription_key']
+text_analytics_base_url = config.AZURE_CONFIG['text_analytics_base_url']
+search_query_base_url = config.AZURE_CONFIG['search_query_base_url']
 language_api_url = text_analytics_base_url + "keyphrases"
 print(language_api_url)
-
 
 # check sentiment
 def checkSentiment(title, selfText):
@@ -18,8 +17,6 @@ def checkSentiment(title, selfText):
     headers   = {"Ocp-Apim-Subscription-Key": subscription_key}
     redditResponse  = requests.post(language_api_url, headers=headers, json=documents)
     redditResponseJson = json.loads(redditResponse.content)
-    languages = redditResponse.json()
-    #pprint(languages)
     searchHeaders = {"content-type": "application/json", "api-key": "26B2F4C6F9DD073A31EEBD94E870F1AF"}
     searchResponse = requests.get(search_query_base_url + "magnetic", headers=searchHeaders)
     searchResponseJson = json.loads(searchResponse.text)
@@ -28,15 +25,12 @@ def checkSentiment(title, selfText):
     # https://superuser.com/questions/1005263/python-script-to-compare-the-keys-of-2-dictionaries-and-if-equal-print-value-of
     #matchingKeys = {key:documents[key] for key in searchResponseJson if key in documents}
 
-
     for searchResponseKeyphrase in searchResponseJson['value'][0]['keyphrases']:
         for redditResponseKeyPhrase in redditResponseJson['documents'][0]['keyPhrases']:
             if searchResponseKeyphrase != redditResponseKeyPhrase:
                 print(searchResponseKeyphrase)
         return
     return
-
-
 
 # reddit bot praw magic
 import praw
